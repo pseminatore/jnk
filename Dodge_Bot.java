@@ -4,7 +4,7 @@ import robocode.util.*;
 import java.awt.Color;
 
 /**
- * Dodge_Bot - a robot by (Jack Kimball)
+ * Dodge_Bot - a robot by (Jack Kimball and Patrick and Connor)
  */
 public class Dodge_Bot extends AdvancedRobot {
 	
