@@ -89,7 +89,7 @@ public class Dodge_Bot extends AdvancedRobot {
 	}
 	
 }
-class Wave{
+class Wave {
 	private double startX;
 	private double startY;
 	private double power;
