@@ -87,6 +87,14 @@ public class Dodge_Bot extends AdvancedRobot {
     		double maximumEscapeAngle = Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
     		return maximumEscapeAngle;
 	}
+	public void onPaint(Graphics2D g) {
+		// Set the paint color to red
+		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
+		for (Wave w : waveList) {
+			w.draw(g, getTime());
+		}
+
+		System.out.println("Waves: " + waveList.size());
 	
 }
 class Wave {
@@ -99,14 +107,14 @@ class Wave {
 	private int[] returnChunk;
 	
 	//set up new wave
-	public Wave(double x, double y, double power, double bearing, int direction, double timeOfFire, int[] chunk){
-		this.startX = x;
-		this.startY = y;
+	public Wave(double startX, double startY, double power, double bearing, int direction, double timeOfFire, int[] chunk){
+		this.startX = startX;
+		this.startY = startY;
 		this.bearing = bearing;
 		this.power = power;
 		this.direction = direction;
 		this.timeOfFire = timeOfFire;
-		returnChunk = chunk;
+		this.returnChunk = chunk;
 	}
 	public double maxEscapeAngle(){
 		return Math.asin(8.0/getBulletSpeed()):
@@ -115,12 +123,22 @@ class Wave {
 		//the wave will have hit the other robot when the radius of the wave exceeds or is equal to the 
 		//distance from the starting coordinates to the enemy robot
 		//					velocity*time=distance
-		if(Point2D.distance(x, y, oppX, oppY)<=((timeOfHit-timeOfFire)*getBulletSpeed){
-			float correctAngle = Math.atan(oppX-x, oppY-y);
-			float angleOffset = (correctAngle-bearing)
-			
+		if(Point2D.distance(startX, startY, oppX, oppY)<=((timeOfHit-timeOfFire)*getBulletSpeed){
+			float correctAngle = Math.atan(oppX-startX, oppY-startY);
+			float angleOffset = (correctAngle-bearing);
+			float guessFactor = Math.max(-1, Math.min(angleOffset/maxEscapeAngle())) * direction;
+			int index = (int)Math.round(returnChunk.length -1)/2 *(guessFactor +1));
+			returnChunk[index]++;
 			return true;
-			
 			}
+		return false;
+	}
+	public void draw(Graphics2D g, long time){
+		int r=(int)((time-fireTime)*getBulletSpeed());
+		int x=(int)startX-r
+		int y= (int)startY-r
+		g.drawOval(x, y, 2*r, 2*r);
+		g.drawLine((int)startX, (int)startY, (int)(startX + r * Math.sin(bearing)), (int)(startY + r * Math.cos(bearing)));
+
 	}
 }
