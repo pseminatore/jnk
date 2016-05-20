@@ -116,6 +116,10 @@ class Wave {
 		//distance from the starting coordinates to the enemy robot
 		//					velocity*time=distance
 		if(Point2D.distance(x, y, oppX, oppY)<=((timeOfHit-timeOfFire)*getBulletSpeed){
+			float correctAngle = Math.atan(oppX-x, oppY-y);
+			float angleOffset = (correctAngle-bearing)
+			
+			return true;
 			
 			}
 	}
