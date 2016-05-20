@@ -2,6 +2,8 @@ package jnk;
 import robocode.*;
 import robocode.util.*;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D
 
 /**
  * Dodge_Bot - a robot by (Jack Kimball and Partrick)
@@ -40,14 +42,23 @@ public class Dodge_Bot extends AdvancedRobot {
 		
     	radar(e);
 
-		// Calculates maximum escape angle of the enemy's linear path
-		// with the law of sines and fires at the intersection point
+		
 		// with a power level proportional to the enemy's distance.
+		//called Maximum Escape Angle (MEA)
 		double bulletPower = Math.min(400 / e.getDistance(), 3);
-    	double headOnBearing = getHeadingRadians() + e.getBearingRadians();
-    	double linearBearing = headOnBearing + Math.asin(e.getVelocity() / Rules.getBulletSpeed(bulletPower) * Math.sin(e.getHeadingRadians() - headOnBearing));
-    	setTurnGunRightRadians(Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
-		if (getGunHeat() == 0) {
+
+    	//testing guess factor targeting
+    	double enemyAbsoluteBearing = e.getBearingRadians() + getHeadingRadians();
+    	double enemyLateralVelocity = e.getVelocity() * Math.sin(e.getHeadingRadians() - enemyAbsoluteBearing);
+    	int lateralDirection = Math.sin(enemyLateralVelocity);
+	double bearingOffset = normalRelativeAngle(...);
+	double maxEscapeAngleClockwise = ...;
+	double maxEscapeAngleCounterclockwise = ...;
+ 
+	double maxEscapeAngle = (bearingOffset < 0) ?
+    	maxEscapeAngleCounterclockwise : maxEscapeAngleClockwise;
+	double guessFactor = lateralDirection * bearingOffset / maxEscapeAngle;
+	if (getGunHeat() == 0) {
 			setFire(bulletPower);
 		}
 	
@@ -67,5 +78,45 @@ public class Dodge_Bot extends AdvancedRobot {
 			turnRight(40);
 			turnLeft(40);
 		}
+	}
+	// Calculates maximum escape angle of the enemy's linear path
+	// with the law of sines and fires at the intersection point
+	public double maximumEscapeAngle(){
+		double headOnBearing = getHeadingRadians() + e.getBearingRadians();
+    		double linearBearing = headOnBearing + Math.asin(e.getVelocity() / Rules.getBulletSpeed(bulletPower) * Math.sin(e.getHeadingRadians() - headOnBearing));
+    		double maximumEscapeAngle = Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
+    		return maximumEscapeAngle;
+	}
+	
+}
+class Wave{
+	private double startX;
+	private double startY;
+	private double power;
+	private double bearing;
+	private int direction;
+	private double timeOfFire;
+	private int[] returnChunk;
+	
+	//set up new wave
+	public Wave(double x, double y, double power, double bearing, int direction, double timeOfFire, int[] chunk){
+		this.startX = x;
+		this.startY = y;
+		this.bearing = bearing;
+		this.power = power;
+		this.direction = direction;
+		this.timeOfFire = timeOfFire;
+		returnChunk = chunk;
+	}
+	public double maxEscapeAngle(){
+		return Math.asin(8.0/getBulletSpeed()):
+	}
+	public boolean hit(double oppX, double oppY, double timeOfHit){
+		//the wave will have hit the other robot when the radius of the wave exceeds or is equal to the 
+		//distance from the starting coordinates to the enemy robot
+		//					velocity*time=distance
+		if(Point2D.distance(x, y, oppX, oppY)<=((timeOfHit-timeOfFire)*getBulletSpeed){
+			
+			}
 	}
 }
