@@ -63,7 +63,11 @@ public class Dodge_Bot extends AdvancedRobot {
 		}
 	}
 	if (e.getVelocity !=0){
-		
+		if((Math.sin(e.getHeadingRadians()-absBearing*e.getVelocity())) < 0){
+			direction = -1;
+		}else{
+			direction = 1;
+		}
 	}
     	double enemyLateralVelocity = e.getVelocity() * Math.sin(e.getHeadingRadians() - enemyAbsoluteBearing);
     	int lateralDirection = Math.sin(enemyLateralVelocity);
@@ -108,6 +112,9 @@ public class Dodge_Bot extends AdvancedRobot {
 		g.setColor(new Color(0xff, 0x00, 0x00, 0x80));
 		for (Wave w : waveList) {
 			w.draw(g, getTime());
+		}
+		for (int i = 0; i<=31; i++){
+			
 		}
 
 		System.out.println("Waves: " + waveList.size());
