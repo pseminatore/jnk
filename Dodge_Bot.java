@@ -4,15 +4,20 @@ import robocode.util.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D
+import java.util.*;
 
 /**
  * Dodge_Bot - a robot by (Jack Kimball and Partrick)
  */
 public class Dodge_Bot extends AdvancedRobot {
-	
+	//number of guess factors wewant to be able to compare
+	//must be odd number so that 0 is in the middle
+	public final static int BUCKETS = 31;
 	double previousEnergy = 100;
-    int movementDirection = 1;
-    int radarDirection = 1;
+    	int movementDirection = 1;
+    	int radarDirection = 1;
+    	ArrayList<Wave> Waves new ArrayList<Wave>();
+    	static int[] buckets = new int[BUCKETS];
     
 	public void run() {
 		setAdjustRadarForGunTurn(true);
@@ -43,12 +48,16 @@ public class Dodge_Bot extends AdvancedRobot {
     	radar(e);
 
 		
-		// with a power level proportional to the enemy's distance.
-		//called Maximum Escape Angle (MEA)
+		// Fire with a power level proportional to the enemy's distance.
 		double bulletPower = Math.min(400 / e.getDistance(), 3);
 
     	//testing guess factor targeting
     	double enemyAbsoluteBearing = e.getBearingRadians() + getHeadingRadians();
+    	double enemyX = getX() + Math.sin(absBearing) * e.getDistance();
+	double enemyY = getY() + Math.cos(absBearing) * e.getDistance();
+	for (inti=0; i<Waves.size(); i++){
+		Wave currentWave = (Wave)Waves.get(i);
+	}
     	double enemyLateralVelocity = e.getVelocity() * Math.sin(e.getHeadingRadians() - enemyAbsoluteBearing);
     	int lateralDirection = Math.sin(enemyLateralVelocity);
 	double bearingOffset = normalRelativeAngle(...);
