@@ -57,6 +57,13 @@ public class Dodge_Bot extends AdvancedRobot {
 	double enemyY = getY() + Math.cos(absBearing) * e.getDistance();
 	for (inti=0; i<Waves.size(); i++){
 		Wave currentWave = (Wave)Waves.get(i);
+		if (currentWave.checkHit(enemyX, enemyY, getTime())){
+			Waves.remove(currentWave);
+			i--;
+		}
+	}
+	if (e.getVelocity !=0){
+		
 	}
     	double enemyLateralVelocity = e.getVelocity() * Math.sin(e.getHeadingRadians() - enemyAbsoluteBearing);
     	int lateralDirection = Math.sin(enemyLateralVelocity);
