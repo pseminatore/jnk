@@ -53,21 +53,21 @@ package jnk;
         double bulletPower = Math.min(400 / e.getDistance(), 3); 
         
      	//testing guess factor targeting 
-     	double enemyAbsoluteBearing = e.getBearingRadians() + getHeadingRadians(); 
+     	double absBearing = e.getBearingRadians() + getHeadingRadians(); 
      	double enemyX = getX() + Math.sin(absBearing) * e.getDistance(); 
  	double enemyY = getY() + Math.cos(absBearing) * e.getDistance(); 
  	for (int i=0; i<Waves.size(); i++){ 
  		Wave currentWave = (Wave)Waves.get(i); 
- 		if (currentWave.checkHit(enemyX, enemyY, getTime())){ 
+ 		if (currentWave.hit(enemyX, enemyY, getTime())){ 
  			Waves.remove(currentWave); 
  			i--; 
  		} 
  	} 
- 	if (e.getVelocity !=0){ 
+ 	if (e.getVelocity() !=0){ 
  		if((Math.sin(e.getHeadingRadians()-absBearing*e.getVelocity())) < 0){ 
- 			direction = -1; 
+ 			radarDirection = -1; 
  		}else{ 
- 			direction = 1; 
+ 			radarDirection = 1; 
  		} 
  	} 
  	int[]currentStats = buckets; 
@@ -82,15 +82,15 @@ package jnk;
  		} 
  	} 
  	//undoing the math done in the Wave object to "unpackage" the guess factor 
- 	double guessFactor =(double)(bestIndex-(buckets.length-1)/2); 
+ 	double guessFactor =(double)(bestGuess-(buckets.length-1)/2); 
  	double angleOffset=direction*guessFactor*newWave.maxEscapeAngle(); 
  	double gunAdjust = (Utils.normalRelativeAngle(absBearing-getGunHeadingRadians()+angleOffset)); 
  	//set the gun to the newly calculated angle 
- 	setGunTurnRightRadians(gunAdjust); 
+ 	setTurnGunRightRadians(gunAdjust); 
  	//only fireif the gun is able to 
  	//Also add the new wave to the data 
  	if (getGunHeat() == 0) { 
- 		if (setFireBullet() != null){ 
+ 		if (setFireBullet(bulletPower) != null){ 
  			setFireBullet(bulletPower); 
  			Waves.add(newWave); 
  		} 
@@ -116,7 +116,7 @@ package jnk;
             return 20-power*3;
         }
  	// Calculates maximum escape angle of the enemy's linear path 
- 	public double maximumEscapeAngle(){ 
+ 	public double maximumEscapeAngle(ScannedRobotEvent e){ 
                 double bulletPower = Math.min(400 / e.getDistance(), 3); 
  		double maximumEscapeAngle = Math.asin(8/getBulletSpeed(bulletPower));
      		return maximumEscapeAngle; 
