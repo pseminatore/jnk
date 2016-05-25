@@ -12,7 +12,7 @@ public class Silver_Surfer extends AdvancedRobot {
 	public static int BINS = 47;
 	public static double _surfStats[] = new double[BINS];
 	public Point2D.Double _myLocation;
-	public point2D.Double _enemyLocation;
+	public Point2D.Double _enemyLocation;
 	
 	public ArrayList _enemyWaves;
 	public ArrayList _surfDirections;
@@ -30,9 +30,9 @@ public class Silver_Surfer extends AdvancedRobot {
 	public void run() {
 		setColors(Color.white,Color.white,Color.black); // body,gun,radar
 		
-		_enemyWaves = new ArrayList();
-		_surfDirections = new ArrayList();
-		_surfAbsBearings = new ArrayList();
+		_enemyWaves = new ArrayList<EnemyWave>();
+		_surfDirections = new ArrayList<Integer>();
+		_surfAbsBearings = new ArrayList<Double>();
 		
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
