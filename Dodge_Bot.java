@@ -69,19 +69,31 @@ public class Dodge_Bot extends AdvancedRobot {
 			direction = 1;
 		}
 	}
-    	double enemyLateralVelocity = e.getVelocity() * Math.sin(e.getHeadingRadians() - enemyAbsoluteBearing);
-    	int lateralDirection = Math.sin(enemyLateralVelocity);
-	double bearingOffset = normalRelativeAngle(...);
-	double maxEscapeAngleClockwise = ...;
-	double maxEscapeAngleCounterclockwise = ...;
- 
-	double maxEscapeAngle = (bearingOffset < 0) ?
-    	maxEscapeAngleCounterclockwise : maxEscapeAngleClockwise;
-	double guessFactor = lateralDirection * bearingOffset / maxEscapeAngle;
-	if (getGunHeat() == 0) {
-			setFire(bulletPower);
+	int[]currentStats = buckets;
+	//create a new wave object
+	Wave newWave = new Wave(getX(), getY(), absBearing, power, direction, getTime(), currentStats);
+	//best guess will always start out at (BUCKETS-1)/2, or a guess factor of 0, or straight ahead (synonyms)
+	int bestGuess = 15;
+	//stepping through and finding the best index in the array
+	for (int i=0; i<BUCKETS; i++){
+		if (currentStats[bestIndex]<currentStats[i]){
+			bestIndex=i;
 		}
-	
+	}
+	//undoing the math done in the Wave object to "unpackage" the guess factor
+	double guessFactor =(double)(bestIndex-(buckets.length-1)/2)
+	double angleOffset=direction*guessFactor*newWave.maxEscapeAngle();
+	double gunAdjust = (Utils.normalRelativeAngle(absBearing-getGunHeadingRadians()+angleOffset);
+	//set the gun to the newly calculated angle
+	setGunTurnRightRadians(gunAdjust);
+	//only fireif the gun is able to
+	//Also add the new wave to the data
+	if (getGunHeat() == 0) {
+		if (setFireBullet() != null{
+			setFireBullet(bulletPower);
+			Waves.add(newWave);
+		}
+	}
     	// Tracks the energy level
     	previousEnergy = e.getEnergy();
   	}
