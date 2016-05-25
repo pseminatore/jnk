@@ -72,7 +72,7 @@ package jnk;
  	} 
  	int[]currentStats = buckets; 
  	//create a new wave object 
- 	Wave newWave = new Wave(getX(), getY(), absBearing, bulletPower, direction, getTime(), currentStats); 
+ 	Wave newWave = new Wave(getX(), getY(), absBearing, bulletPower, movementDirection, getTime(), currentStats); 
  	//best guess will always start out at (BUCKETS-1)/2, or a guess factor of 0, or straight ahead (synonyms) 
  	int bestGuess = 15; 
  	//stepping through and finding the best index in the array 
@@ -83,7 +83,7 @@ package jnk;
  	} 
  	//undoing the math done in the Wave object to "unpackage" the guess factor 
  	double guessFactor =(double)(bestGuess-(buckets.length-1)/2); 
- 	double angleOffset=direction*guessFactor*newWave.maxEscapeAngle(); 
+ 	double angleOffset=movementDirection*guessFactor*newWave.maxEscapeAngle(); 
  	double gunAdjust = (Utils.normalRelativeAngle(absBearing-getGunHeadingRadians()+angleOffset)); 
  	//set the gun to the newly calculated angle 
  	setTurnGunRightRadians(gunAdjust); 
