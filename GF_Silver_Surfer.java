@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Silver_Surfer - a robot by (Jack Kimball)
+ * GF_Silver_Surfer - a robot by (Jack Kimball)
  */
 public class GF_Silver_Surfer extends AdvancedRobot {
 	public static int BINS = 47;
