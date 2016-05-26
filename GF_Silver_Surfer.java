@@ -1,3 +1,4 @@
+
 package jnk;
 import robocode.*;
 import robocode.util.Utils;
@@ -21,7 +22,7 @@ public class GF_Silver_Surfer extends AdvancedRobot {
 	public ArrayList _surfAbsBearings;
 	
 	ArrayList<Wave> Waves = new ArrayList<Wave>();
-    static int[] buckets = new int[BUCKETS];
+    int[][] buckets = new int[13][31];
 	int radarDirection = 1; 
 	
 	public static double _oppEnergy = 100.0;
@@ -85,7 +86,8 @@ public class GF_Silver_Surfer extends AdvancedRobot {
         doSurfing();
  
 		// Fire with a power level proportional to the enemy's distance. 
-        double bulletForce = Math.min(400 / e.getDistance(), 3); 
+        double bulletForce = Math.min(400 / e.getDistance(), 3);
+		double linearBearing = absBearing + Math.asin(e.getVelocity() / Rules.getBulletSpeed(bulletForce) * Math.sin(e.getHeadingRadians() - absBearing)); 
         
      	//testing guess factor targeting 
      	double enemyX = getX() + Math.sin(absBearing) * e.getDistance(); 
@@ -104,7 +106,7 @@ public class GF_Silver_Surfer extends AdvancedRobot {
 	 			radarDirection = 1; 
 	 		} 
 	 	} 
- 		int[]currentStats = buckets; 
+ 		int[] currentStats = buckets[(int)(e.getDistance() / 100)];
  		//create a new wave object 
  		Wave newWave = new Wave(getX(), getY(), bulletForce, absBearing, radarDirection, getTime(), currentStats); 
  		//best guess will always start out at (BUCKETS-1)/2, or a guess factor of 0, or straight ahead (synonyms) 
@@ -120,14 +122,19 @@ public class GF_Silver_Surfer extends AdvancedRobot {
  		double angleOffset = radarDirection * guessFactor * newWave.maxEscapeAngle(); 
  		double gunAdjust = (Utils.normalRelativeAngle(absBearing - getGunHeadingRadians() + angleOffset)); 
  		//set the gun to the newly calculated angle 
- 		setTurnGunRightRadians(gunAdjust); 
+ 		//setTurnGunRightRadians(gunAdjust); 
  		//only fireif the gun is able to 
  		//Also add the new wave to the data 
  		if (getGunHeat() == 0) { 
-	 		if (setFireBullet(bulletForce) != null) { 
+	 		if (setFireBullet(bulletForce) != null && e.getVelocity() != 0) { 
+				setTurnGunRightRadians(gunAdjust); 
 	 			setFireBullet(bulletForce); 
 	 			Waves.add(newWave); 
-	 		} 
+	 		} else if (e.getVelocity() == 0) {
+				setTurnGunRightRadians(Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
+				setFire(bulletForce);
+				//Waves.add(newWave); 
+			}
 	 	}
 	}
 	
