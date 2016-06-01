@@ -410,4 +410,10 @@ public class DCluster_Surfer extends AdvancedRobot {
  
         public EnemyWave() { }
     }	
+    class Log{
+    	float distance;
+    	float energy;
+    	float guessFactor;
+    	float aVelocity;
+    	float lVelocity;
 }
