@@ -8,7 +8,7 @@ package jnk;
  
  
 /** 
-10  * Dodge_Bot - a robot by (Jack Kimball and Partrick) 
+10  * Dodge_Bot - a robot by (Jack Kimball and Patrick and Connor) 
 11  */ 
  public class Dodge_Bot extends AdvancedRobot { 
 	//number of guess factors wewant to be able to compare 
