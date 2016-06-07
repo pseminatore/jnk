@@ -8,9 +8,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * GF_Silver_Surfer - a robot by (Jack Kimball)
+ * GF_Silver_Surfer - a robot by (Jack Kimball and Patrick and sometimes Connor)
  */
-public class GF_Silver_Surfer extends AdvancedRobot {
+public class SuperBot extends AdvancedRobot {
 	public static int BINS = 47;
 	public final static int BUCKETS = 31; 
 	public static double _surfStats[] = new double[BINS];
@@ -26,6 +26,7 @@ public class GF_Silver_Surfer extends AdvancedRobot {
 	int radarDirection = 1; 
 	
 	public static double _oppEnergy = 100.0;
+	public boolean isGuessFactor = false;
 	
 	// rectangle representing an 800x600 battlefield used for wall smoothing.
 	public static Rectangle2D.Double _fieldRect = new java.awt.geom.Rectangle2D.Double(18, 18, 764, 564);
