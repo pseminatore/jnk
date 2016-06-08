@@ -73,11 +73,11 @@ public class SuperButt extends AdvancedRobot {
             ew.direction = ((Integer) _surfDirections.get(2)).intValue();
             ew.directAngle = ((Double) _surfAbsBearings.get(2)).doubleValue();
             ew.fireLocation = (Point2D.Double) _enemyLocation.clone(); // last tick
-            theirShots++;
+            
 
             _enemyWaves.add(ew);
         }
-	int tempEnergy = _oppEnergy;
+	float tempEnergy = _oppEnergy;
         _oppEnergy = e.getEnergy();
         if ((tempEnergy - _oppEnergy)>0 && (tempEnergy - _oppEnergy)<3){
         	ourHits++;
@@ -90,7 +90,7 @@ public class SuperButt extends AdvancedRobot {
         updateWaves();
         doSurfing();
         if (isGuessFactor){
-            guessFactor();
+            guessFactor(ScannedRobotEvent e);
             }else{
             double bulletForce = Math.min(400 / e.getDistance(), 3);
     	double headOnBearing = getHeadingRadians() + e.getBearingRadians();
