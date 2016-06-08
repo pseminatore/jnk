@@ -8,10 +8,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * GF_Silver_Surfer - a robot by (Jack Kimball and Patrick and sometimes Connor)
+ * SuperButt - a robot by (Jack Kimball and Patrick and sometimes Connor)
  */
-public class SuperBot extends AdvancedRobot {
-
+public class SuperButt extends AdvancedRobot {
+	public int ourShots=0;
+	public int ourHits=0;
+	public float ourAccuracy=0;
+	
     public static int BINS = 47;
     public final static int BUCKETS = 31;
     public static double _surfStats[] = new double[BINS];
@@ -70,12 +73,16 @@ public class SuperBot extends AdvancedRobot {
             ew.direction = ((Integer) _surfDirections.get(2)).intValue();
             ew.directAngle = ((Double) _surfAbsBearings.get(2)).doubleValue();
             ew.fireLocation = (Point2D.Double) _enemyLocation.clone(); // last tick
+            theirShots++;
 
             _enemyWaves.add(ew);
         }
-
+	int tempEnergy = _oppEnergy;
         _oppEnergy = e.getEnergy();
-
+        if ((tempEnergy - _oppEnergy)>0 && (tempEnergy - _oppEnergy)<3){
+        	ourHits++;
+	}
+	
         // update after EnemyWave detection, because that needs the previous
         // enemy location as the source of the wave
         _enemyLocation = project(_myLocation, absBearing, e.getDistance());
@@ -91,7 +98,12 @@ public class SuperBot extends AdvancedRobot {
     	setTurnGunRightRadians(Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
 		if (getGunHeat() == 0) {
 			setFire(bulletForce);
+			ourShots++;
 		}
+        }
+        ourAccuracy =(float) ourHits / ourShots;
+        if (ourAccuracy < 30.0){
+        	isGuessFactor = false;
         }
     }
 
@@ -118,7 +130,7 @@ public class SuperBot extends AdvancedRobot {
         double bulletForce = Math.min(400 / e.getDistance(), 3);
         double linearBearing = absBearing + Math.asin(e.getVelocity() / Rules.getBulletSpeed(bulletForce) * Math.sin(e.getHeadingRadians() - absBearing));
 
-        //testing guess factor targeting 
+        //guess factor targeting 
         double enemyX = getX() + Math.sin(absBearing) * e.getDistance();
         double enemyY = getY() + Math.cos(absBearing) * e.getDistance();
         for (int i = 0; i < Waves.size(); i++) {
@@ -159,9 +171,11 @@ public class SuperBot extends AdvancedRobot {
                 setTurnGunRightRadians(gunAdjust);
                 setFireBullet(bulletForce);
                 Waves.add(newWave);
+                ourShots++;
             } else if (e.getVelocity() == 0) {
                 setTurnGunRightRadians(Utils.normalRelativeAngle(linearBearing - getGunHeadingRadians()));
                 setFire(bulletForce);
+                ourShots++;
                 //Waves.add(newWave); 
             }
         }
