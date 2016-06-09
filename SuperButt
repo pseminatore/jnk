@@ -90,7 +90,7 @@ public class SuperButt extends AdvancedRobot {
         updateWaves();
         doSurfing();
         if (isGuessFactor){
-            guessFactor(ScannedRobotEvent e);
+            guessFactor(e);
             }else{
             double bulletForce = Math.min(400 / e.getDistance(), 3);
     	double headOnBearing = getHeadingRadians() + e.getBearingRadians();
@@ -119,7 +119,7 @@ public class SuperButt extends AdvancedRobot {
         }
     }
 
-    public void guessFactor() {
+    public void guessFactor(ScannedRobotEvent e) {
 
         double lateralVelocity = getVelocity() * Math.sin(e.getBearingRadians());
         double absBearing = e.getBearingRadians() + getHeadingRadians();
